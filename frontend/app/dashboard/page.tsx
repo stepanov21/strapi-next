@@ -1,5 +1,6 @@
 import React from 'react';
 import {JobTable} from "@/components/custom/JobTable";
+import AddJobItem from "@/components/custom/AddJobItem";
 
 export async function getStrapiJobs() {
     try {
@@ -25,7 +26,8 @@ const Page = async () => {
     const jobItems = await getStrapiJobs()
     console.log(jobItems.data)
     return (
-        <div className='container'>
+        <div className='container mt-28'>
+            <AddJobItem/>
             <JobTable jobItems={jobItems.data}/>
         </div>
     );

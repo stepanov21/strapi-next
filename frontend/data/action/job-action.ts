@@ -1,28 +1,29 @@
 'use server'
 
 import {z} from "zod";
-import {addNewJob} from "@/data/services/add-new-job-service";
+import {addNewJob, deleteJob} from "@/data/services/job-service";
+import {redirect} from "next/navigation";
 
 export interface INewJob {
     company: string;
-    title: string;
+    jobTitle: string;
 }
 
 const schemaRegister = z.object({
     company: z.string().min(2).max(100, {
         message: "Меньше двух нельзя",
     }),
-    title: z.string({
+    jobTitle: z.string({
         message: "Введи название вакансии",
     }),
 });
 
 export async function addNewJobAction(prevState, formData: FormData) {
 
-    const validatedFields = schemaRegister.safeParse(
+    const validatedFields = schemaRegister.safeParse<INewJob>(
         {
             company: formData.get('company'),
-            title: formData.get('title')
+            jobTitle: formData.get('jobTitle')
         }
     )
 
@@ -52,10 +53,24 @@ export async function addNewJobAction(prevState, formData: FormData) {
             message: 'Ошибка регистрации',
         }
     }
+    redirect('/dashboard');
     // return {
     //     ...prevState,
     //     zodErrors: null,
     //     data: res,
     //     message: 'Регистрация прошла!',
     // }
+}
+
+export async function deleteJobAction(id) {
+    const res = await deleteJob(id)
+    if(!res) {
+        return
+    }
+
+    if(res.error) {
+        return
+    }
+
+    redirect('/dashboard')
 }
