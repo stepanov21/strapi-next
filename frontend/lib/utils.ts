@@ -1,17 +1,17 @@
-import { type ClassValue, clsx } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
 export function flattenAttributes(data: any): any {
   // Check if data is a plain object; return as is if not
   if (
-      typeof data !== "object" ||
-      data === null ||
-      data instanceof Date ||
-      typeof data === "function"
+    typeof data !== "object" ||
+    data === null ||
+    data instanceof Date ||
+    typeof data === "function"
   ) {
     return data;
   }
@@ -31,9 +31,9 @@ export function flattenAttributes(data: any): any {
 
     // If the key is 'attributes' or 'data', and its value is an object, merge their contents
     if (
-        (key === "attributes" || key === "data") &&
-        typeof data[key] === "object" &&
-        !Array.isArray(data[key])
+      (key === "attributes" || key === "data") &&
+      typeof data[key] === "object" &&
+      !Array.isArray(data[key])
     ) {
       Object.assign(flattened, flattenAttributes(data[key]));
     } else {
@@ -46,7 +46,10 @@ export function flattenAttributes(data: any): any {
 }
 
 export function getStrapiURL() {
-  return process.env.NEXT_PUBLIC_STRAPI_URL ?? "http://localhost:1337";
+  return (
+    process.env.NEXT_PUBLIC_STRAPI_URL ??
+    "https://stylish-heart-21d0548729.strapiapp.com"
+  );
 }
 
 export function getStrapiMedia(url: string | null) {

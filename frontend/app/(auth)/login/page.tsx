@@ -5,15 +5,17 @@ import {useFormState} from 'react-dom'
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
-import {registerUserAction} from "@/data/action/auth-action";
+import {loginUserAction} from "@/data/action/auth-action";
 import Link from "next/link";
 
 const SignUp = () => {
-    const [state, action] = useFormState(registerUserAction, {
-
+    const [state, action] = useFormState(loginUserAction, {
+        data: null,
+        zodErrors: null,
+        message: null,
     })
     return (
-        <form action={registerUserAction}>
+        <form action={action}>
             <Card className="w-[350px]">
                 <CardHeader>
                     <CardTitle className='text-center text-2xl'>Вход</CardTitle>
@@ -23,7 +25,7 @@ const SignUp = () => {
                     <div className="grid w-full items-center gap-4">
                         <div className="flex flex-col space-y-2.5">
                             <Input name='identifier' placeholder="Твой логин или мейл" />
-                            <Input name='password' placeholder="Твой пароль" />
+                            <Input name='password' type='password' placeholder="Твой пароль" />
                         </div>
                     </div>
                 </CardContent>

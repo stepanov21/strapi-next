@@ -1,94 +1,103 @@
-'use client'
+"use client";
 
 import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableFooter,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table"
-import {IJobItem} from "@/app/dashboard/page";
-import {EditJob} from "@/components/custom/EditJob";
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { IJobItem, TStatus } from "@/app/(main)/dashboard/page";
+import { EditJob } from "@/components/custom/EditJob";
+import { Check, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import ChangeJobStatus from "@/components/custom/ChangeJobStatus";
 
-const invoices = [
-    {
-        invoice: "INV001",
-        paymentStatus: "Paid",
-        totalAmount: "$250.00",
-        paymentMethod: "Credit Card",
-    },
-    {
-        invoice: "INV002",
-        paymentStatus: "Pending",
-        totalAmount: "$150.00",
-        paymentMethod: "PayPal",
-    },
-    {
-        invoice: "INV003",
-        paymentStatus: "Unpaid",
-        totalAmount: "$350.00",
-        paymentMethod: "Bank Transfer",
-    },
-    {
-        invoice: "INV004",
-        paymentStatus: "Paid",
-        totalAmount: "$450.00",
-        paymentMethod: "Credit Card",
-    },
-    {
-        invoice: "INV005",
-        paymentStatus: "Paid",
-        totalAmount: "$550.00",
-        paymentMethod: "PayPal",
-    },
-    {
-        invoice: "INV006",
-        paymentStatus: "Pending",
-        totalAmount: "$200.00",
-        paymentMethod: "Bank Transfer",
-    },
-    {
-        invoice: "INV007",
-        paymentStatus: "Unpaid",
-        totalAmount: "$300.00",
-        paymentMethod: "Credit Card",
-    },
-]
+export const statusColor = {
+  "in proccess": "bg-amber-400",
+  acepted: " bg-green-700 text-white",
+  rejected: "bg-red-800 text-white",
+};
 
-export function JobTable({jobItems} : {jobItems: IJobItem[]}) {
-    console.log(jobItems)
-    return (
-        <Table>
-            <TableCaption>A list of your recent invoices.</TableCaption>
-            <TableHeader>
-                <TableRow>
-                    <TableHead className="w-[100px]">Компания</TableHead>
-                    <TableHead>Вакансия</TableHead>
-                    <TableHead>Статус</TableHead>
-                    <TableHead className="text-right">Дата подачи</TableHead>
-                    <TableHead className="text-right">Ред.</TableHead>
-                </TableRow>
-            </TableHeader>
-            <TableBody>
-                {jobItems.map((invoice, id) => (
-                    <TableRow key={id}>
-                        <TableCell className="font-medium">{invoice.attributes.company}</TableCell>
-                        <TableCell>{invoice.attributes.jobTitle}</TableCell>
-                        <TableCell>{invoice.attributes.status}</TableCell>
-                        <TableCell className="text-right mr-auto">{invoice.attributes.sendingDate}</TableCell>
-                        <TableCell className="text-right mr-auto"><EditJob jobId={invoice.id}/></TableCell>
-                    </TableRow>
-                ))}
-            </TableBody>
-            <TableFooter>
-                <TableRow>
-                    <TableCell colSpan={3}>Total</TableCell>
-                    <TableCell className="text-right">{jobItems.length} заявки</TableCell>
-                </TableRow>
-            </TableFooter>
-        </Table>
-    )
+export function JobTable({ jobItems }: { jobItems: IJobItem[] }) {
+  const jobsFilter = (items: IJobItem[], filterName: TStatus) => {
+    return items.filter((item) => item.attributes.status === `${filterName}`);
+  };
+
+  return (
+    <Table>
+      <TableCaption>A list of your recent invoices.</TableCaption>
+      <TableHeader>
+        <TableRow>
+          <TableHead className="w-[100px] ">Компания</TableHead>
+          <TableHead>Вакансия</TableHead>
+          <TableHead>Статус</TableHead>
+          <TableHead className="text-right sm:hidden">
+            Дата подачи
+          </TableHead>
+          <TableHead className="text-right">Ред.</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {jobItems.map((invoice, id) => (
+          <TableRow key={id}>
+            <TableCell className="font-medium">
+              {invoice.attributes.company}
+            </TableCell>
+            <TableCell>{invoice.attributes.jobTitle}</TableCell>
+            <TableCell>
+              <div className="flex items-center h-full gap-2">
+                <span
+                  className={`${
+                    statusColor[invoice.attributes.status]
+                  } px-2 min-w-32 text-center sm:hidden`}
+                >
+                  {invoice.attributes.status}
+                </span>
+                <ChangeJobStatus
+                  JobId={invoice.id}
+                  status={invoice.attributes.status}
+                />
+              </div>
+            </TableCell>
+            <TableCell className="text-right mr-auto sm:hidden">
+              {invoice.attributes.sendingDate}
+            </TableCell>
+            <TableCell className="text-right mr-auto">
+              <EditJob jobId={invoice.id} />
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+      <TableFooter>
+        <TableRow>
+          <TableCell colSpan={5}>
+            <div className="flex justify-between">
+              <div className="font-bold">Всего: {jobItems.length} откликов</div>
+              <div>
+                <div
+                  className={`px-4 inline-block text-right ${statusColor["acepted"]}`}
+                >
+                  {jobsFilter(jobItems, "acepted").length}
+                </div>
+                <div
+                  className={`px-4 inline-block text-right ${statusColor["rejected"]}`}
+                >
+                  {jobsFilter(jobItems, "rejected").length}
+                </div>
+                <div
+                  className={`px-4 inline-block text-right ${statusColor["in proccess"]}`}
+                >
+                  {jobsFilter(jobItems, "in proccess").length}
+                </div>
+              </div>
+            </div>
+          </TableCell>
+        </TableRow>
+      </TableFooter>
+    </Table>
+  );
 }

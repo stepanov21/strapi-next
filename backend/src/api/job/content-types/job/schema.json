@@ -29,6 +29,9 @@
     },
     "sendingDate": {
       "type": "date"
+    },
+    "parentId": {
+      "type": "integer"
     }
   }
 }
