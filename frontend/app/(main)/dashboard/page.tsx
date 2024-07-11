@@ -5,7 +5,7 @@ import { getAuthToken } from "@/data/services/get-token";
 import { getMyUserData } from "@/data/services/get-my-user-data";
 import { getStrapiURL } from "@/lib/utils";
 
-export async function getStrapiJobs() {
+async function getStrapiJobs() {
   const authToken = await getAuthToken();
   const user = await getMyUserData();
   const baseUrl = getStrapiURL();
@@ -43,19 +43,15 @@ export interface IJobItem {
   };
 }
 
-const Page = async () => {
+const Dashboard = async () => {
   const jobItems = await getStrapiJobs();
   console.log(jobItems);
   return (
     <div>
       <AddJobItem />
-      {jobItems?.data ? (
         <JobTable jobItems={jobItems.data} />
-      ) : (
-        <h2>Ничего нет</h2>
-      )}
     </div>
   );
 };
 
-export default Page;
+export default Dashboard;

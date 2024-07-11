@@ -71,7 +71,7 @@ export async function addNewJobAction(prevState: any, formData: FormData) {
   redirect("/dashboard");
 }
 
-export async function deleteJobAction(id) {
+export async function deleteJobAction(id: number) {
   const res = await deleteJob(id);
   if (!res) {
     return;
@@ -84,7 +84,7 @@ export async function deleteJobAction(id) {
   redirect("/dashboard");
 }
 
-export async function updateJobAction(id, data) {
+export async function updateJobAction(id: number, data: any) {
   const res = await updateJobStatus(id, data);
   if (!res) {
     return console.log("Чето не то");

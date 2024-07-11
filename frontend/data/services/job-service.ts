@@ -4,7 +4,7 @@ import {getAuthToken} from "@/data/services/get-token";
 import {getMyUserData} from "@/data/services/get-my-user-data";
 import { getStrapiURL } from "@/lib/utils";
 
-export async function addNewJob(userData) {
+export async function addNewJob(userData: any) {
     const baseUrl = getStrapiURL();
     const url = new URL("/api/jobs", baseUrl);
     const authToken = await getAuthToken();
@@ -67,7 +67,7 @@ export async function deleteJob(id : number) {
     }
 }
 
-export async function updateJobStatus(id : number, data) {
+export async function updateJobStatus(id : number, data: any) {
     const baseUrl = getStrapiURL();
     const url = new URL(`/api/jobs/${id}`, baseUrl);
     const authToken = await getAuthToken();

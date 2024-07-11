@@ -7,6 +7,7 @@ import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import {loginUserAction} from "@/data/action/auth-action";
 import Link from "next/link";
+import ErrorToast from '@/components/custom/ErrorToast';
 
 const SignUp = () => {
     const [state, action] = useFormState(loginUserAction, {
@@ -14,6 +15,7 @@ const SignUp = () => {
         zodErrors: null,
         message: null,
     })
+    console.log(state)
     return (
         <form action={action}>
             <Card className="w-[350px]">
@@ -32,6 +34,7 @@ const SignUp = () => {
                 <CardFooter className="flex justify-between">
                     <Button type='submit' className='w-full'>Войти</Button>
                 </CardFooter>
+                <ErrorToast errorFields={state.zodErrors} message={state.message}/>
             </Card>
         </form>
     );

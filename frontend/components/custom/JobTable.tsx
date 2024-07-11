@@ -12,8 +12,7 @@ import {
 } from "@/components/ui/table";
 import { IJobItem, TStatus } from "@/app/(main)/dashboard/page";
 import { EditJob } from "@/components/custom/EditJob";
-import { Check, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+
 import ChangeJobStatus from "@/components/custom/ChangeJobStatus";
 
 export const statusColor = {
@@ -23,13 +22,14 @@ export const statusColor = {
 };
 
 export function JobTable({ jobItems }: { jobItems: IJobItem[] }) {
+  
   const jobsFilter = (items: IJobItem[], filterName: TStatus) => {
     return items.filter((item) => item.attributes.status === `${filterName}`);
   };
 
+
   return (
     <Table>
-      <TableCaption>A list of your recent invoices.</TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead className="w-[100px] ">Компания</TableHead>
@@ -42,7 +42,8 @@ export function JobTable({ jobItems }: { jobItems: IJobItem[] }) {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {jobItems.map((invoice, id) => (
+        
+        {jobItems.length ? jobItems.map((invoice, id) => (
           <TableRow key={id}>
             <TableCell className="font-medium">
               {invoice.attributes.company}
@@ -70,7 +71,7 @@ export function JobTable({ jobItems }: { jobItems: IJobItem[] }) {
               <EditJob jobId={invoice.id} />
             </TableCell>
           </TableRow>
-        ))}
+        )) : <TableRow><TableCell colSpan={5} className="text-center text-gray-400">Пока что ничего нет, но вы можете добавить</TableCell></TableRow>}
       </TableBody>
       <TableFooter>
         <TableRow>
